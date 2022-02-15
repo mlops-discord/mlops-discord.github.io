@@ -1,2 +1,0 @@
-"use strict";(self.webpackChunkgatsby_starter_portfolio_minimal_theme=self.webpackChunkgatsby_starter_portfolio_minimal_theme||[]).push([[844],{1135:function(t,e,n){n.r(e),n.d(e,{default:function(){return a}});var r=n(7294);n(3507);function a(){return r.createElement(r.Fragment,null)}}}]);
-//# sourceMappingURL=component---src-pages-privacy-js-b8f09b30463da9412141.js.map

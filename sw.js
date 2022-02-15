@@ -27,23 +27,23 @@ workbox.core.clientsClaim();
  */
 self.__precacheManifest = [
   {
-    "url": "webpack-runtime-5da5d0314f036afed31d.js"
+    "url": "webpack-runtime-360fa1db0c73d275000f.js"
   },
   {
-    "url": "framework-a1c8fd239e666cd62f78.js"
+    "url": "framework-5868b939619c935cbc4b.js"
   },
   {
-    "url": "app-557c305d5ff0d6efe9ab.js"
+    "url": "app-beefc9638efa5c07b0ec.js"
   },
   {
     "url": "offline-plugin-app-shell-fallback/index.html",
-    "revision": "e66a833248e957ef4abda1b2a7cb7626"
+    "revision": "dcf343218d1cfa17f160ec98d6693b2f"
   },
   {
-    "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-934d819f2404b2d0c427.js"
+    "url": "component---cache-caches-gatsby-plugin-offline-app-shell-js-8bcc14af8695a1d2992c.js"
   },
   {
-    "url": "polyfill-93ec0bfa81c37e8606aa.js"
+    "url": "polyfill-c552196bdf768efecae6.js"
   },
   {
     "url": "manifest.webmanifest",
@@ -73,6 +73,24 @@ const MessageAPI = {
 
   clearPathResources: event => {
     event.waitUntil(idbKeyval.clear())
+
+    // We detected compilation hash mismatch
+    // we should clear runtime cache as data
+    // files might be out of sync and we should
+    // do fresh fetches for them
+    event.waitUntil(
+      caches.keys().then(function (keyList) {
+        return Promise.all(
+          keyList.map(function (key) {
+            if (key && key.includes(`runtime`)) {
+              return caches.delete(key)
+            }
+
+            return Promise.resolve()
+          })
+        )
+      })
+    )
   },
 
   enableOfflineShell: () => {
@@ -139,7 +157,7 @@ const navigationRoute = new NavigationRoute(async ({ event }) => {
   // Check for resources + the app bundle
   // The latter may not exist if the SW is updating to a new version
   const resources = await idbKeyval.get(`resources:${pathname}`)
-  if (!resources || !(await caches.match(`/app-557c305d5ff0d6efe9ab.js`))) {
+  if (!resources || !(await caches.match(`/app-beefc9638efa5c07b0ec.js`))) {
     return await fetch(event.request)
   }
 
